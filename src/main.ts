@@ -77,7 +77,25 @@ async function getActress(id: number): Promise<Actress | null> {
   }
 }
 
-(async () => {
-  const actress = await getActress(1);
-  console.log(actress);
-})()
+//funzione per ottenere le attrici
+async function getAllActresses(): Promise<Actress[]> {
+  try {
+    const response = await fetch(`http://localhost:3333/actresses`);
+    const data: unknown = await response.json();
+
+    if (!(data instanceof Array)) {
+      throw new Error('Formato dei dati errato, non è un array.');
+    }
+
+    const actresses: Actress[] = data.filter(isActress);
+    return actresses;
+
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error('Errore nel caricamento dei dati', error);
+    } else {
+      console.error('Errore sconosciuto', error)
+    }
+    return [];
+  }
+}

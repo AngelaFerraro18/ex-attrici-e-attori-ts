@@ -99,3 +99,21 @@ async function getAllActresses(): Promise<Actress[]> {
     return [];
   }
 }
+
+//funzione per ottenere delle attrici attraverso un array di id
+async function getActresses(ids: number[]): Promise<(Actress | null)[]> {
+  try {
+
+    const promises = ids.map(id => getActress(id));
+    return await Promise.all(promises);
+
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error('Errore nel caricamento dei dati', error);
+    } else {
+      console.error('Errore sconosciuto', error)
+    }
+    return [];
+
+  }
+}
